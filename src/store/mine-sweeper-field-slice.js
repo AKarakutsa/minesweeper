@@ -23,13 +23,11 @@ const sweeperMapSlice = createSlice({
     },
     reducers: {
         startGame(state, action) {
-            state.minesLeft = N_MINES;
-            state.width = N_ROWS;
-            state.height = N_COLS;
             state.gameStarted = true;
             state.gameActive = true;
+            state.minesLeft = N_MINES;
             state.result = N_MINES + " Mines Left";
-
+            state.uncovered = N_ROWS * N_COLS - N_MINES;
             const allCells = N_ROWS * N_COLS;
             state.fields.length = allCells;
             for (let i = 0; i < state.fields.length; i++) {
@@ -108,6 +106,8 @@ const sweeperMapSlice = createSlice({
             }
         },
         findEmptyCells(state, action) {
+            state.fields[action.payload] -= COVER_FOR_CELL;
+            state.uncovered--;
             const findEmptyCells = (state, cellPosition) => {
                 let allCells = N_ROWS * N_COLS;
                 let current_col = cellPosition % N_COLS;
@@ -118,6 +118,7 @@ const sweeperMapSlice = createSlice({
                     if (cell >= 0) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -128,6 +129,7 @@ const sweeperMapSlice = createSlice({
                     if (cell >= 0) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -138,6 +140,7 @@ const sweeperMapSlice = createSlice({
                     if (cell < allCells) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -149,6 +152,7 @@ const sweeperMapSlice = createSlice({
                 if (cell >= 0) {
                     if (state.fields[cell] > MINE_CELL) {
                         state.fields[cell] -= COVER_FOR_CELL;
+                        state.uncovered--;
                         if (state.fields[cell] === EMPTY_CELL) {
                             findEmptyCells(state, cell);
                         }
@@ -159,6 +163,7 @@ const sweeperMapSlice = createSlice({
                 if (cell < allCells) {
                     if (state.fields[cell] > MINE_CELL) {
                         state.fields[cell] -= COVER_FOR_CELL;
+                        state.uncovered--;
                         if (state.fields[cell] === EMPTY_CELL) {
                             findEmptyCells(state, cell);
                         }
@@ -170,6 +175,7 @@ const sweeperMapSlice = createSlice({
                     if (cell >= 0) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -180,6 +186,7 @@ const sweeperMapSlice = createSlice({
                     if (cell < allCells) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -190,6 +197,7 @@ const sweeperMapSlice = createSlice({
                     if (cell < allCells) {
                         if (state.fields[cell] > MINE_CELL) {
                             state.fields[cell] -= COVER_FOR_CELL;
+                            state.uncovered--;
                             if (state.fields[cell] === EMPTY_CELL) {
                                 findEmptyCells(state, cell);
                             }
@@ -197,11 +205,11 @@ const sweeperMapSlice = createSlice({
                     }
                 }
             };
-            state.fields[action.payload] -= COVER_FOR_CELL;
             findEmptyCells(state, action.payload);
         },
         openCell(state, action) {
             state.fields[action.payload] -= COVER_FOR_CELL;
+            state.uncovered--;
         },
         flagAsMine(state, action) {
             state.fields[action.payload] += MARK_FOR_CELL;
@@ -215,11 +223,10 @@ const sweeperMapSlice = createSlice({
         },
         finishGame(state, action) {
             state.fields[action.payload] -= COVER_FOR_CELL;
-            state.minesLeft--;
-            if (state.gameActive && state.minesLeft > 0) {
+            if (state.gameActive && state.uncovered > 0) {
                 state.result = "You loss";
             }
-            if (state.gameActive && state.minesLeft === 0) {
+            if (state.gameActive && state.uncovered === 0) {
                 state.result = "You win";
             }
             state.gameStarted = false;
