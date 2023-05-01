@@ -1,0 +1,57 @@
+.cell {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+}
+
+.mines-around-0 {
+    background-image: url("../images/0.png");
+}
+
+.mines-around-1 {
+    background-image: url("../images/1.png");
+}
+
+.mines-around-2 {
+    background-image: url("../images/2.png");
+}
+
+.mines-around-3 {
+    background-image: url("../images/3.png");
+}
+
+.mines-around-4 {
+    background-image: url("../images/4.png");
+}
+
+.mines-around-5 {
+    background-image: url("../images/5.png");
+}
+
+.mines-around-6 {
+    background-image: url("../images/6.png");
+}
+
+.mines-around-7 {
+    background-image: url("../images/7.png");
+}
+
+.mines-around-8 {
+    background-image: url("../images/8.png");
+}
+
+.cover {
+    background-image: url("../images/10.png");
+}
+
+.mine {
+    background-image: url("../images/9.png");
+}
+
+.mark {
+    background-image: url("../images/11.png");
+}
+
+.wrongMark {
+    background-image: url("../images/12.png");
+}

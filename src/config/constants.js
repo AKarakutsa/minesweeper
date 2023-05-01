@@ -1,0 +1,9 @@
+export const N_MINES = 40;
+export const N_ROWS = 16;
+export const N_COLS = 16;
+export const COVER_FOR_CELL = 10;
+export const MARK_FOR_CELL = 10;
+export const EMPTY_CELL = 0;
+export const MINE_CELL = 9;
+export const COVERED_MINE_CELL = MINE_CELL + COVER_FOR_CELL;
+export const MARKED_MINE_CELL = COVERED_MINE_CELL + MARK_FOR_CELL;
