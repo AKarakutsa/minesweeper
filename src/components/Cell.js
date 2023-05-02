@@ -51,7 +51,7 @@ const Cell = (props) => {
                               mineCell, coveredMineCell, markForCell, markedMineCell, coverForCell, gameStarted) => {
         if (gameStarted) {
             if (uncovered === 0) {
-                dispatch(sweeperMapSliceActions.finishGame(id));
+                dispatch(sweeperMapSliceActions.win(id));
             } else {
                 if (event.button === 1) { //mousewheel clicked
                     if (mineCell < field) {
@@ -69,7 +69,7 @@ const Cell = (props) => {
                     }
                     if (mineCell < field && field < markedMineCell) {
                         if (coveredMineCell === field) {
-                            dispatch(sweeperMapSliceActions.finishGame(id))
+                            dispatch(sweeperMapSliceActions.lose(id))
                         } else {
                             if (coverForCell === field) {
                                 dispatch(sweeperMapSliceActions.findEmptyCells(id));
@@ -81,7 +81,7 @@ const Cell = (props) => {
                 }
             }
         } else {
-            dispatch(sweeperMapSliceActions.startGame());
+            dispatch(sweeperMapSliceActions.deactivateCurrentGame());
         }
     };
 

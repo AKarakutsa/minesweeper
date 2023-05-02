@@ -221,15 +221,21 @@ const sweeperMapSlice = createSlice({
             state.minesLeft++;
             state.result = state.minesLeft + " Mines Left";
         },
-        finishGame(state, action) {
+        lose(state, action) {
             state.fields[action.payload] -= COVER_FOR_CELL;
             if (state.gameActive && state.uncovered > 0) {
                 state.result = "You loss";
             }
+            state.gameStarted = false;
+        },
+        win(state, action) {
             if (state.gameActive && state.uncovered === 0) {
                 state.result = "You win";
             }
             state.gameStarted = false;
+        },
+        deactivateCurrentGame(state, action) {
+            state.gameActive = false;
         }
     },
 });
