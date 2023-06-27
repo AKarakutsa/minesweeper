@@ -1,4 +1,6 @@
+// Importing styles specific to the Cell component
 import classes from "./Cell.module.css";
+// Importing constants from configuration
 import {
     COVER_FOR_CELL,
     COVERED_MINE_CELL,
@@ -6,10 +8,16 @@ import {
     MINE_CELL,
     MARK_FOR_CELL
 } from "../config/constants";
+// Importing Redux hooks
 import {useDispatch, useSelector} from "react-redux";
+// Importing actions from the slice
 import {sweeperMapSliceActions} from "../store/mine-sweeper-field-slice";
 
+// defineClassName is a helper function that determines the CSS class to be applied to a cell
+// based on the game's state and the cell's value
 const defineClassName = (gameStarted, field) => {
+    // Checks are performed to determine whether the game has started and what the cell's value is,
+    // with the appropriate CSS class being returned in each case
     if (gameStarted) {
         if (COVERED_MINE_CELL < field) {
             return classes.mark;
@@ -38,17 +46,22 @@ const defineClassName = (gameStarted, field) => {
     return "";
 }
 
+// Cell component represents an individual cell on the Minesweeper board
 const Cell = (props) => {
+    // Hook up to Redux to dispatch actions and select parts of the state
     const dispatch = useDispatch();
     const minesLeft = useSelector((state) => state.sweeperMapSlice.minesLeft);
     const gameStarted = useSelector((state) => state.sweeperMapSlice.gameStarted);
     const uncovered = useSelector((state) => state.sweeperMapSlice.uncovered);
+    // Retrieve the id and field value from the passed props
     const { id, field } = props;
+    // Determine the class of the cell based on whether the game has started and the cell's value
     let className = defineClassName(gameStarted, field);
 
-
+    // cellClickHandler responds to click events on the cell
     const cellClickHandler = (event, id, field, minesLeft, uncovered,
                               mineCell, coveredMineCell, markForCell, markedMineCell, coverForCell, gameStarted) => {
+        // Check if game has started and implement the logic based on the button clicked (left click, right click, or mouse wheel click) and the current cell's state
         if (gameStarted) {
             if (uncovered === 0) {
                 dispatch(sweeperMapSliceActions.win(id));
@@ -63,7 +76,7 @@ const Cell = (props) => {
                             dispatch(sweeperMapSliceActions.removeFlagAsMine(id));
                         }
                     }
-                } else if (event.button === 0) { //right button clicked
+                } else if (event.button === 0) {
                     if (coveredMineCell < field) {
                         return;
                     }
@@ -85,6 +98,7 @@ const Cell = (props) => {
         }
     };
 
+    // Render the cell with the appropriate CSS classes, and attach the click event handler
     return (
         <div
             id={`cell-${id}`}
